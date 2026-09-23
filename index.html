@@ -361,6 +361,7 @@ const GAS_JSON_URL = "https://script.google.com/macros/s/AKfycbxk7B63_UWZZjsS0sZ
 let visitsBySchool = {}; // normalizedKey -> array of visit rows (sorted new->old)
 
 /* =========================================================
+
    3. 渲染區域/學校卡片（骨架，資料到齊後再填拜訪統計）
    ========================================================= */
 function renderGrid(containerId, regions){
@@ -375,8 +376,18 @@ function renderGrid(containerId, regions){
               <span class="badge badge-none" id="badge_${s.id}">(尚無資料)</span>
             </div>
             <div id="${s.id}" class="teacher">
-              <span class="supervisor" id="sup_${s.id}">區域督導：${s.supervisor}</span><br>
+             <span class="supervisor" id="sup_${s.id}">區域督導：${s.supervisor}</span><br>
               認輔老師：${s.teachers}
+              
+              <!-- 1. 新增 AI 統整摘要區塊 (若資料中有 aiSummary 則顯示藍色框) -->
+              ${s.aiSummary ? `
+                <div style="background-color: #eef6ff; border: 1px solid #b3d7ff; border-radius: 8px; padding: 10px; margin: 10px 0 8px 0;">
+                  <div style="font-weight: bold; color: #0056b3; margin-bottom: 4px;">🤖 AI 拜訪總結</div>
+                  <div style="color: #333; font-size: 13px; line-height: 1.5;">${s.aiSummary}</div>
+                </div>
+              ` : ''}
+
+              <!-- 2. 原本的最新拜訪摘要容器 -->
               <div id="summary_${s.id}"></div>
             </div>
           `).join("")}
